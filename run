@@ -1,0 +1,9 @@
+#!/bin/bash
+
+if [ ! -d .virtualenv ]; then
+    virtualenv .virtualenv
+fi
+.virtualenv/bin/pip install -r requirements.txt
+.virtualenv/bin/python ./collect.py git@gitlab.tech.lastmile.com:platform-automation/kubernetes-cluster-base.git
+echo 'Now run:'
+echo '    kubectl apply -f output/'

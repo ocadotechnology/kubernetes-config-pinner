@@ -45,10 +45,11 @@ def collect_configs(root_repo, cache_dir='.cache', collected_dir='.collected'):
                 for line in fobj.readlines():
                     repository_urls.append(line.strip())
 
-        kubernetes_file = os.path.join(repo_dir, 'main.yaml')
-        if os.path.isfile(kubernetes_file):
-            destination_file = os.path.join(collected_dir, dir_name + '.yaml')
-            shutil.copy(kubernetes_file, destination_file)
+        kubernetes_directory = os.path.join(repo_dir, 'manifests')
+        if os.path.isdir(kubernetes_directory):
+            for kubernetes_file in os.listdir(kubernetes_directory):
+                destination_file = os.path.join(collected_dir, dir_name + '-' + kubernetes_file)
+                shutil.copy(os.path.join(kubernetes_directory, kubernetes_file), destination_file)
 
 
 def process_configs(collected_dir='.collected', output_dir='output'):

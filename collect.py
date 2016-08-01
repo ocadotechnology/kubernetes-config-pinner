@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import argparse
 import docker
 import git
 import logging
@@ -100,16 +101,26 @@ def replacement_image(image_name):
     return new_image_name
 
 
-def main(argv):
-    assert(len(argv) == 2)
-
-    root_repo = argv[1]
-
+def main(root_repo):
     collect_configs(root_repo)
     process_configs()
 
 
+def build_parser():
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument('base_repo_name')
+
+    parser.add_argument('--verbose', '-v', action='count', default=0)
+
+    return parser
+
 if __name__ == '__main__':
-    logging.basicConfig(level=logging.DEBUG)
+    parser = build_parser()
+    args = parser.parse_args()
+
+    logging.basicConfig(level=[logging.ERROR, logging.WARNING, logging.INFO, logging.DEBUG][args.verbose])
     logging.getLogger('git').level = logging.INFO
-    main(sys.argv)
+    logging.getLogger('docker').level = logging.INFO
+    logging.getLogger('requests').level = logging.INFO
+    main(args.base_repo_name)

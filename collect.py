@@ -6,6 +6,7 @@ import git
 import logging
 import os
 import shutil
+import six
 import sys
 import yaml
 
@@ -75,7 +76,7 @@ def process_configs(collected_dir='.collected', output_dir='output'):
 
 
 def replace_images(data):
-    if isinstance(data, basestring):
+    if isinstance(data, six.string_types):
         return
     if hasattr(data, 'iteritems'):
         for key, value in data.iteritems():
@@ -102,9 +103,9 @@ def replacement_image(image_name):
     return new_image_name
 
 
-def main(root_repo):
+def main(root_repo, output_dir):
     collect_configs(root_repo)
-    process_configs()
+    process_configs(output_dir=output_dir)
 
 
 def build_parser():
@@ -113,6 +114,7 @@ def build_parser():
     parser.add_argument('base_repo_name')
 
     parser.add_argument('--verbose', '-v', action='count', default=0)
+    parser.add_argument('--output-dir', default='output')
 
     return parser
 
@@ -124,4 +126,4 @@ if __name__ == '__main__':
     logging.getLogger('git').level = logging.INFO
     logging.getLogger('docker').level = logging.INFO
     logging.getLogger('requests').level = logging.INFO
-    main(args.base_repo_name)
+    main(args.base_repo_name, output_dir=args.output_dir)

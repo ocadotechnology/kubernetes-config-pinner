@@ -64,7 +64,12 @@ def process_configs(collected_dir='.collected', output_dir='output'):
         replace_images(data)
 
         with open(os.path.join(output_dir, filename), 'w') as fobj:
-            fobj.write(yaml.dump(data))
+            fobj.write(
+                yaml.safe_dump(
+                    data,
+                    default_flow_style=False,
+                ),
+            )
 
 
 def replace_images(data):

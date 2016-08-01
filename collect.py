@@ -78,8 +78,8 @@ def process_configs(collected_dir='.collected', output_dir='output'):
 def replace_images(data):
     if isinstance(data, six.string_types):
         return
-    if hasattr(data, 'iteritems'):
-        for key, value in data.iteritems():
+    if hasattr(data, 'items'):
+        for key, value in data.items():
             if key == 'image':
                 data[key] = replacement_image(value)
             replace_images(value)

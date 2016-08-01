@@ -105,7 +105,7 @@ def main(argv):
 
     root_repo = argv[1]
 
-    #collect_configs(root_repo)
+    collect_configs(root_repo)
     process_configs()
 
 

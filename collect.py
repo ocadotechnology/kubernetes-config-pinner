@@ -62,13 +62,13 @@ def process_configs(collected_dir='.collected', output_dir='output'):
 
     for filename in os.listdir(collected_dir):
         with open(os.path.join(collected_dir, filename)) as fobj:
-            data = yaml.safe_load(fobj.read())
+            data = list(yaml.safe_load_all(fobj.read()))
 
         replace_images(data)
 
         with open(os.path.join(output_dir, filename), 'w') as fobj:
             fobj.write(
-                yaml.safe_dump(
+                yaml.safe_dump_all(
                     data,
                     default_flow_style=False,
                 ),

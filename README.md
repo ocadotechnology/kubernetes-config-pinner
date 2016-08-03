@@ -28,7 +28,7 @@ This bundle should be immutable, and whenever it's deployed it should give exact
 
 * This project collects a set of yaml files from a hierarchical set of repositories.
 * It looks up the docker images referenced in the registry, and rewrites those references
-with the current hash (thus making them immutable)
+  with the current hash (thus making them immutable)
 * It generates an `output` directory for use with `kubectl`
 
 This project is used in a pipeline in Go, that feeds the generated artifact (the output directory) into a deploy job
@@ -36,6 +36,14 @@ This project is used in a pipeline in Go, that feeds the generated artifact (the
 ### Repo spec
 * `manifests/`: Place yaml files here
 * `dependencies-v1`: Line delimited git repo names
+
+### Adding things to be deployed
+Either:
+* Add your manifest to an existing repo, if it logically belongs with other pieces, or is tightly coupled
+* Or create a new repository, and put it in the `manifests` directory. Then, add a reference into
+  the `dependencies-v1` file in one of the current repos. This is just the git repo url, and the git repo
+  needs to allow the `go-prod` user access. This means that when building that parent repo, all of the
+  dependencies will automatically be downloaded and included into the generated directory.
 
 ### Local Example
 `./run -vv` in this repo

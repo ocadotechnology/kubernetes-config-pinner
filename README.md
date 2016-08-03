@@ -35,7 +35,7 @@ This project is used in a pipeline in Go, that feeds the generated artifact (the
 
 ### Repo spec
 * `manifests/`: Place yaml files here
-* `dependencies-v1`: Line delimited git repo names
+* `dependencies-v1`: Line delimited git repo urls
 
 ### Adding things to be deployed
 Either:

@@ -31,6 +31,29 @@ This bundle should be immutable, and whenever it's deployed it should give exact
 with the current hash (thus making them immutable)
 * It generates an `output` directory for use with `kubectl`
 
+This project is used in a pipeline in Go, that feeds the generated artifact (the output directory) into a deploy job
+
 ### Repo spec
 * `manifests/`: Place yaml files here
 * `dependencies-v1`: Line delimited git repo names
+
+### Local Example
+`./run -vv` in this repo
+* Creates a virtualenv
+* Installs dependencies
+* Pulls down git@gitlab.tech.lastmile.com:platform-automation/kubernetes-cluster-base.git and all it's dependencies, recursively
+* Generates manifests in `./output`, ready for `kubectl apply -f output/`
+```
+m@hotcpc17686:~/git/kubernetes-config-pinner$ ./run -vv
+INFO:__main__:Collecting git@gitlab.tech.lastmile.com:platform-automation/kubernetes-cluster-base.git...
+INFO:__main__:Collecting git@gitlab.tech.lastmile.com:platform-automation/kubernetes-newrelic.git...
+INFO:__main__:Collecting git@gitlab.tech.lastmile.com:platform-automation/kubernetes-chaosmonkey.git...
+INFO:__main__:Collecting git@gitlab.tech.lastmile.com:platform-automation/kubernetes-selfhosting.git...
+INFO:__main__:Collecting git@gitlab.tech.lastmile.com:platform-automation/kubernetes-prometheus.git...
+Now run:
+    kubectl apply -f output/
+```
+
+### Under the hood
+* Git repos are cached in `./cache`
+* Collected manifests are saved (before pinning) in `./collected`

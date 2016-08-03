@@ -96,11 +96,11 @@ def replacement_image(image_name):
     docker_client = docker.Client(version='auto')
     docker_client.pull(image_name)
 
-    image_hash = docker_client.inspect_image(image_name)['Id']
+    image_hash = docker_client.inspect_image(image_name)['Config']['Image']
     new_image_name = "%s:%s" % (image_name.split(':')[0], image_hash)
 
-    LOGGER.debug("Replacing image %s with %s", image_name, new_image_name)
-    return new_image_name
+    #LOGGER.debug("Replacing image %s with %s", image_name, new_image_name)
+    return image_name
 
 
 def main(root_repo, output_dir):

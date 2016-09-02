@@ -93,6 +93,10 @@ def replace_images(data):
 
 
 def replacement_image(image_name):
+    if image_name.startswith('gcr'):
+        LOGGER.warning("Not pinning gcr '%s', due to problems with gcr/nexus mirrors", image_name)
+        return image_name
+
     docker_client = docker.Client(version='auto')
     docker_client.pull(image_name)
 

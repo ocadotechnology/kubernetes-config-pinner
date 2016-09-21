@@ -12,7 +12,7 @@ import yaml
 
 LOGGER = logging.getLogger(__name__)
 
-def collect_configs(root_repo, cache_dir='.cache', collected_dir='.collected'):
+def collect_configs(repository_urls, cache_dir='.cache', collected_dir='.collected'):
 
     if not os.path.isdir(cache_dir):
         os.mkdir(cache_dir)
@@ -21,8 +21,6 @@ def collect_configs(root_repo, cache_dir='.cache', collected_dir='.collected'):
         shutil.rmtree(collected_dir)
 
     os.mkdir(collected_dir)
-
-    repository_urls = [root_repo]
 
     while repository_urls:
         repo_url = repository_urls.pop(0)
@@ -111,15 +109,15 @@ def replacement_image(image_name):
     return new_image_name
 
 
-def main(root_repo, output_dir):
-    collect_configs(root_repo)
+def main(repository_urls, output_dir):
+    collect_configs(repository_urls)
     process_configs(output_dir=output_dir)
 
 
 def build_parser():
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('base_repo_name')
+    parser.add_argument('base_repo_name', nargs='+')
 
     parser.add_argument('--verbose', '-v', action='count', default=0)
     parser.add_argument('--output-dir', default='output')
